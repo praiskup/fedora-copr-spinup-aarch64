@@ -1,0 +1,18 @@
+#! /bin/sh -x
+
+src_img=$1
+dst_img=/tmp/newdisk.qcow2
+
+cp "$src_img" "$dst_img"
+
+# We could be using 'virt-resize --expand /dev/sda2' instead, but we are
+# running too old hypervisor to handle Fedora images:
+# e2fsck: Get a newer version of e2fsck!
+# (his requires cloud-utils-growpart installed)
+qemu-img resize "$dst_img" 9G
+
+virt-customize -a "$dst_img" \
+	--install cloud-utils-growpart \
+	--install qemu-guest-agent
+
+# virt-sysprep --selinux-relabel -a "$dst_img"
