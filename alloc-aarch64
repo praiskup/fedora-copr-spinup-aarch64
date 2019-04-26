@@ -179,7 +179,7 @@ def main():
         sys.exit(1)
 
     vm_name = os.environ['RESALLOC_NAME']
-    mac, ip = mac_and_ip_address(os.environ['RESALLOC_POOL_ID'], os.environ['RESALLOC_ID'])
+    _, ip = mac_and_ip_address(os.environ['RESALLOC_POOL_ID'], os.environ['RESALLOC_ID'])
 
     try:
         global workdir

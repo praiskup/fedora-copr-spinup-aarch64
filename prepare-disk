@@ -7,11 +7,10 @@ dst_img=/tmp/newdisk.qcow2
 
 cp "$src_img" "$dst_img"
 
-# We could be using 'virt-resize --expand /dev/sda2' instead, but we are
-# running too old hypervisor to handle Fedora images:
-# e2fsck: Get a newer version of e2fsck!
-# (his requires cloud-utils-growpart installed)
-# qemu-img resize "$dst_img" 9G
+# We could be using 'virt-resize --expand /dev/sda2' instead, but we are running
+# too old hypervisor to handle Fedora images:
+#       e2fsck: Get a newer version of e2fsck!
+# So we use cloud-utils-growpart instead.
 
 guestfish -a "$dst_img" <<EOF
 run
@@ -25,7 +24,7 @@ chmod 0755   /etc/rc.d/rc.local
 EOF
 
 virt-customize -a "$dst_img" \
-	--install cloud-utils-growpart \
+    --install cloud-utils-growpart \
     --install cloud-utils \
     --install qemu-guest-agent \
     --root-password password:redhat  \
