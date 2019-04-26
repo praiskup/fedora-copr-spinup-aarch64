@@ -40,48 +40,25 @@ def call(cmd, *args, **kwargs):
     return status
 
 
-def generate_config_iso(name, mac, ip):
-    meta_data_content = """\
-instance-id: iid-123456
-local-hostname: cloudy
-network-interfaces: |
-  iface eth0 inet static
-  address {ip}
-  netmask 255.255.254.0
-  gateway 38.145.49.254
-""".format(ip=ip, mac=mac)
-
-    user_data_content ="""#cloud-config
-runcmd:
-  - setenforce 1
-"""
-    network_config_content ="""\
-version: 1
-config:
- - type: physical
-   name: eth0
-   mac_address: "{mac}"
-   subnets:
-    - type: static
-      address: {ip}
-      netmask: 255.255.254.0
-      gateway: 38.145.49.254
-""".format(mac=mac, ip=ip)
+def generate_config_iso(name, ip):
+    script_content = """#! /bin/bash
+nmcli con add con-name "{con_name}" ifname {device} type ethernet ip4 {ip}/23 gw4 38.145.49.254
+nmcli con mod "{con_name}" ipv4.dns "8.8.8.8,1.1.1.1"
+nmcli con up "{con_name}" iface {device}
+""".format(
+    ip=ip,
+    con_name="copr-static",
+    device='eth0',
+)
 
     config_dir = os.path.join(workdir, "config")
     os.makedirs(config_dir)
 
-    with open(os.path.join(config_dir, 'meta-data'), 'w') as f:
-        f.write(meta_data_content)
-
-    with open(os.path.join(config_dir, 'user-data'), 'w') as f:
-        f.write(user_data_content)
-
-#    with open(os.path.join(config_dir, 'network-config'), 'w') as f:
-#        f.write(network_config_content)
+    with open(os.path.join(config_dir, 'pre-network-script.sh'), 'w') as f:
+        f.write(script_content)
 
     image = os.path.join(workdir, 'config.iso')
-    rc = call(['mkisofs', '-o', image, '-V', 'cidata', '-r', '-J', '--quiet', config_dir])
+    rc = call(['mkisofs', '-o', image, '-V', 'copr_config', '-r', '-J', '--quiet', config_dir])
     if rc != 0:
         raise Exception("mkisofs failed")
 
@@ -164,7 +141,7 @@ def create_volume_from_volume(name, volume, pool=disk_pool, size=None):
             raise Exception(['cant resize ' + name])
 
 
-def boot_machine(name, volumes, mac):
+def boot_machine(name, volumes):
     cmd = [
         'virt-install',
         '--connect', connection,
@@ -176,7 +153,7 @@ def boot_machine(name, volumes, mac):
         '--noautoconsole',
         '--import',
         '-n', name,
-        '--network', 'bridge=br0,model=virtio,mac=' + mac,
+        '--network', 'bridge=br0,model=virtio',
         '--channel', "unix,target_type=virtio,name='org.qemu.guest_agent.0'",
         # '--boot', 'kernel_args="ds=nocloud-net"'
     ]
@@ -210,7 +187,7 @@ def main():
         log.debug("workdir is '{0}'".format(workdir))
 
         # cloud-init config volume
-        image_file = generate_config_iso(vm_name, mac, ip)
+        image_file = generate_config_iso(vm_name, ip)
 
         log.debug("config image {0}".format(image_file))
         create_volume_from_iso(vm_name + '_config', '1M', image_file, pool='images')
@@ -228,7 +205,7 @@ def main():
             ('default/' + vm_name + '_swap',   'disk',  'virtio'),
         ]
 
-        boot_machine(vm_name, volumes, mac)
+        boot_machine(vm_name, volumes)
 
     except (Exception, KeyboardInterrupt) as e:
         log.exception(e)
