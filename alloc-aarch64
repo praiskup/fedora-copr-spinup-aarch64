@@ -46,9 +46,9 @@ instance-id: iid-123456
 local-hostname: cloudy
 network-interfaces: |
   iface eth0 inet static
-  address: {ip}
-  netmask: 255.255.254.0
-  gateway: 38.145.49.254
+  address {ip}
+  netmask 255.255.254.0
+  gateway 38.145.49.254
 """.format(ip=ip, mac=mac)
 
     user_data_content ="""#cloud-config
