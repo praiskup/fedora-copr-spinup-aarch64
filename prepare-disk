@@ -37,6 +37,5 @@ install_packages='
 virt-customize -a "$dst_img" \
     --update \
     --install "$(echo $install_packages | tr ' ' ,)" \
-    --root-password password:redhat \
     --uninstall cloud-init \
     --selinux-relabel
