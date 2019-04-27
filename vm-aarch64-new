@@ -20,6 +20,7 @@ img_volume = 'copr-builder'
 
 def get_parser():
     parser = argparse.ArgumentParser()
+    parser.add_argument('connection')
     parser.add_argument('--swap-vol-size', metavar='GB', default=20)
     parser.add_argument('--root-vol-size', metavar='GB')
     parser.add_argument('--cpu-count', default=2)
@@ -27,14 +28,9 @@ def get_parser():
     return parser
 
 
-public_keys = {
-    'hypervisor1': 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC4Rcn/h7KRpB6svH/vjcNWH3dyPi7k7V3DhYBYS9NqBNYUqNDU8BAWTdoIWh3zbDxE1gaT54aQG7KySuwX/8sy3YHYtEKc70grk3orIn6CZV1yZ8VJsgRE6IpK/vo7UqNuTm0v6SaQUjZFK1O8fmD08uQxw5JP5BVnZqN4xrGiAzeYlh+yfiE/I2iC4+d5EceWSTZOd/c3aoycXusfibc8xNyR9k2hXmMOpr+99OLM6/yB1hWMy6PFFWnQyLQvJ2cyrMeQU+BceKY/BZFGrH6fO0DYu5q92FHz19+gOhnq3x2PKB0o0UPZVncxPVSiHluB635HyEHz+9J6B2k+lDrt copr@virthost-aarch64-os01.fedorainfracloud.org',
-}
-
-
 # global variables
 workdir = None
-connection = 'qemu+ssh://copr@virthost-aarch64-os01.fedorainfracloud.org/system'
+connection = None
 
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger()
@@ -198,6 +194,9 @@ def main():
 
     parser = get_parser()
     args = parser.parse_args()
+
+    global connection
+    connection = args.connection
 
     vm_name = os.environ['RESALLOC_NAME']
     _, ip = mac_and_ip_address(os.environ['RESALLOC_POOL_ID'], os.environ['RESALLOC_ID'])
