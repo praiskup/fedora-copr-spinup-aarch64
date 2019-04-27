@@ -45,6 +45,10 @@ def generate_config_iso(name, ip):
 nmcli con add con-name "{con_name}" ifname {device} type ethernet ip4 {ip}/23 gw4 38.145.49.254
 nmcli con mod "{con_name}" ipv4.dns "8.8.8.8,1.1.1.1"
 nmcli con up "{con_name}" iface {device}
+
+growpart /dev/vda 2
+resize2fs /dev/vda2
+mount -o remount /
 """.format(
     ip=ip,
     con_name="copr-static",
@@ -137,7 +141,7 @@ def create_volume_from_volume(name, volume, pool=disk_pool, size=None):
 
     if size:
         if virsh_silent(['vol-resize', '--vol', name, '--capacity',
-                new_size, '--pool', pool]):
+                size, '--pool', pool]):
             raise Exception(['cant resize ' + name])
 
 
@@ -193,7 +197,7 @@ def main():
         create_volume_from_iso(vm_name + '_config', '1M', image_file, pool='images')
 
         # the / volume
-        create_volume_from_volume(vm_name + '_root', img_volume, pool='images')
+        create_volume_from_volume(vm_name + '_root', img_volume, pool='images', size=root_size)
 
         # swap volume
         alloc_disk(vm_name + '_swap', swap_size)
