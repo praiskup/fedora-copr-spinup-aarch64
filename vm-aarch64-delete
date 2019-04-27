@@ -2,8 +2,17 @@
 
 die(){ echo >&2 "!! $*"; exit 1; }
 
-test -z "$1" && die "ARG1 needs to be VIRSH connection string"
 test -z "$RESALLOC_NAME" && die "no vm specified, empty \$RESALLOC_NAME variable"
 
-virsh -c "$1" destroy  "$RESALLOC_NAME"
-virsh -c "$1" undefine "$RESALLOC_NAME" --remove-all-storage --nvram
+case "$RESALLOC_POOL_ID" in
+*aarch64_01*)
+    conn=qemu+ssh://copr@virthost-aarch64-os01.fedorainfracloud.org/system
+    ;;
+*aarch64_02*)
+    conn=qemu+ssh://copr@virthost-aarch64-os02.fedorainfracloud.org/system
+    ;;
+*) die "unknown RESALLOC_POOL_ID=$RESALLOC_POOL_ID" ;;
+esac
+
+virsh -c "$conn" destroy  "$RESALLOC_NAME"
+virsh -c "$conn" undefine "$RESALLOC_NAME" --remove-all-storage --nvram
