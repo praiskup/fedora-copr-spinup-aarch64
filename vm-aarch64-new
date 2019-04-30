@@ -60,6 +60,13 @@ def wait_for_ssh(ip):
         raise Exception("waiting not successful")
 
 
+def execute_spinup_playbook(ip):
+    playbook = '/home/copr/provision/builderpb_nova_aarch64.yml'
+    cmd = ['timeout', '600', 'ansible-playbook', playbook, '-i', ip + ","]
+    if call([cmd]):
+        raise Exception("can't spinup")
+
+
 def generate_config_iso(name, ip):
     script_content = """#! /bin/bash
 growpart /dev/vda 2
@@ -241,6 +248,9 @@ def main():
 
         wait_for_ssh(ip)
 
+        execute_spinup_playbook(ip)
+
+        print(ip)
 
     except (Exception, KeyboardInterrupt) as e:
         log.exception(e)
