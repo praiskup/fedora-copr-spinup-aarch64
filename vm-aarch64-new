@@ -56,7 +56,7 @@ def call(cmd, *args, **kwargs):
 
 def wait_for_ssh(ip):
     script = os.path.join(script_path, 'wait-for-ssh', 'wait-for-ssh')
-    if call([script, '--timeout', '120', ip]):
+    if call([script, '--timeout', '180', ip]):
         raise Exception("waiting not successful")
 
 
