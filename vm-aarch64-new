@@ -63,7 +63,7 @@ def wait_for_ssh(ip):
 def execute_spinup_playbook(ip):
     playbook = '/home/copr/provision/builderpb_nova_aarch64.yml'
     cmd = ['timeout', '600', 'ansible-playbook', playbook, '-i', ip + ","]
-    if call([cmd]):
+    if call(cmd):
         raise Exception("can't spinup")
 
 
