@@ -62,13 +62,12 @@ def wait_for_ssh(ip):
 
 def generate_config_iso(name, ip):
     script_content = """#! /bin/bash
-nmcli con add con-name "{con_name}" ifname {device} type ethernet ip4 {ip}/23 gw4 38.145.49.254
-nmcli con mod "{con_name}" ipv4.dns "8.8.8.8,1.1.1.1"
-nmcli con up "{con_name}" iface {device}
-
 growpart /dev/vda 2
 resize2fs /dev/vda2
 mount -o remount /
+nmcli con add con-name "{con_name}" ifname {device} type ethernet ip4 {ip}/23 gw4 38.145.49.254
+nmcli con mod "{con_name}" ipv4.dns "8.8.8.8,1.1.1.1"
+nmcli con up "{con_name}" iface {device}
 """.format(
     ip=ip,
     con_name="copr-static",
