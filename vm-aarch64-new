@@ -54,6 +54,12 @@ def call(cmd, *args, **kwargs):
     return status
 
 
+def wait_for_ssh(ip):
+    script = os.path.join(script_path, 'wait-for-ssh', 'wait-for-ssh')
+    if call([script, '--timeout', '120', ip]):
+        raise Exception("waiting not successful")
+
+
 def generate_config_iso(name, ip):
     script_content = """#! /bin/bash
 nmcli con add con-name "{con_name}" ifname {device} type ethernet ip4 {ip}/23 gw4 38.145.49.254
@@ -233,6 +239,9 @@ def main():
         ]
 
         boot_machine(vm_name, volumes, args.cpu_count)
+
+        wait_for_ssh(ip)
+
 
     except (Exception, KeyboardInterrupt) as e:
         log.exception(e)
