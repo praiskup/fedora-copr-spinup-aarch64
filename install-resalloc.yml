@@ -61,8 +61,8 @@
       owner: resalloc
       group: resalloc
     with_items:
-    - server.yml
-    - pools.yml
+    - server.yaml
+    - pools.yaml
 
   - service:
       name: resalloc
