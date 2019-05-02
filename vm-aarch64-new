@@ -63,7 +63,7 @@ def wait_for_ssh(ip):
 def execute_spinup_playbook(ip):
     playbook = '/home/resalloc/provision/provisionpb_libvirt_aarch64.yml'
     cmd = ['timeout', '600', 'ansible-playbook', playbook, '-i', ip + ","]
-    if call(cmd):
+    if call(cmd, stdout=sys.stderr):
         raise Exception("can't spinup")
 
 
@@ -251,7 +251,8 @@ def main():
 
         execute_spinup_playbook(ip)
 
-        print(ip)
+        sys.stdout.write("{0}\n".format(ip))
+        sys.stdout.flush()
 
     except (Exception, KeyboardInterrupt) as e:
         log.exception(e)
