@@ -119,9 +119,9 @@ def mac_and_ip_address(pool_id, vm_id):
     vm_id = int(vm_id)
 
     if vm_id < 0:
-        raise Exception("wrong RESALLOC_ID={0}".format(vm_id))
+        raise Exception("wrong RESALLOC_ID_IN_POOL={0}".format(vm_id))
     elif vm_id > max_id:
-        raise Exception("too high RESALLOC_ID={0}".format(vm_id))
+        raise Exception("too high RESALLOC_ID_IN_POOL={0}".format(vm_id))
 
 
     last_part = 101 + ip_shift + vm_id
@@ -205,7 +205,7 @@ def boot_machine(name, volumes, vcpus):
 
 def main():
     fail = False
-    for required_var in ['RESALLOC_NAME', 'RESALLOC_POOL_ID', 'RESALLOC_ID']:
+    for required_var in ['RESALLOC_NAME', 'RESALLOC_POOL_ID', 'RESALLOC_ID_IN_POOL']:
         if required_var not in os.environ:
             fail = True
             log.error("missing variable {0}".format(required_var))
@@ -216,7 +216,8 @@ def main():
     args = parser.parse_args()
 
     vm_name = os.environ['RESALLOC_NAME']
-    _, ip = mac_and_ip_address(os.environ['RESALLOC_POOL_ID'], os.environ['RESALLOC_ID'])
+    _, ip = mac_and_ip_address(os.environ['RESALLOC_POOL_ID'],
+            os.environ['RESALLOC_ID_IN_POOL'])
 
     setup_connection(os.environ['RESALLOC_POOL_ID'])
 
