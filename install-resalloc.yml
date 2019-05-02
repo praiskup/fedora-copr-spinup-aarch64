@@ -35,7 +35,7 @@
   - copy:
       src: provisionpb_libvirt_aarch64.yml
       dest: /home/resalloc/provision/provisionpb_libvirt_aarch64.yml
-      mode: 644
+      mode: 0644
       owner: resalloc
       group: resalloc
 
@@ -50,6 +50,13 @@
       src: /home/copr/.ssh/id_rsa
       dest: /home/resalloc/.ssh/id_rsa
       remote_src: yes
+      owner: resalloc
+      group: resalloc
+      mode: 0600
+
+  - copy:
+      src: resalloc/ssh_config
+      dest: /home/resalloc/.ssh/config
       owner: resalloc
       group: resalloc
       mode: 0600
