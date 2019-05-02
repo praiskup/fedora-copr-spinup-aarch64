@@ -61,12 +61,23 @@
       group: resalloc
       mode: 0600
 
-  - copy:
-      src: copr
-      dest: /home/copr/provision-aarch64
-      directory_mode: yes
+  - file:
+      path: /home/copr/provision-aarch64
+      state: directory
+      mode: 0700
       owner: copr
       group: copr
+
+  - copy:
+      src: "copr/{{ item }}"
+      dest: "/home/copr/provision-aarch64/{{ item }}"
+      owner: copr
+      group: copr
+    with_items:
+    - allocate-vm
+    - alloc.yml
+    - terminate-vm
+    - terminate.yml
 
   - copy:
       src: "resalloc/{{ item }}"

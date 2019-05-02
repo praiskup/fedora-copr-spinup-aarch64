@@ -4,4 +4,4 @@
 
   tasks:
   - name: terminate VM
-    local_action: shell ./terminate-vm "{{ copr_task.vm_name }}"
+    local_action: shell /bin/bash ./terminate-vm "{{ copr_task.vm_name }}"

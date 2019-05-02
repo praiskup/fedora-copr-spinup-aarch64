@@ -2,4 +2,4 @@
   hosts: 127.0.0.1
   tasks:
   - name: spin machine with script
-    local_action: shell ./allocate-vm
+    local_action: shell /bin/bash ./allocate-vm
