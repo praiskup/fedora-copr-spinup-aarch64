@@ -65,6 +65,8 @@
       src: copr
       dest: /home/copr/provision-aarch64
       directory_mode: yes
+      owner: copr
+      group: copr
 
   - copy:
       src: "resalloc/{{ item }}"
