@@ -42,7 +42,7 @@
   - file:
       path: /home/resalloc/.ssh
       state: directory
-      mode: 700
+      mode: 0700
       owner: resalloc
       group: resalloc
 
@@ -52,3 +52,19 @@
       remote_src: yes
       owner: resalloc
       group: resalloc
+      mode: 0600
+
+  - copy:
+      src: "resalloc/{{ item }}"
+      dest: "/etc/resallocserver/{{ item }}"
+      mode: 0600
+      owner: resalloc
+      group: resalloc
+    with_items:
+    - server.yml
+    - pools.yml
+
+  - service:
+      name: resalloc
+      state: started
+      enabled: yes
