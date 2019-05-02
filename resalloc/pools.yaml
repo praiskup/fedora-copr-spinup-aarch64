@@ -46,3 +46,5 @@ aarch64_01_dev:
     max_prealloc: 2
     cmd_new: "/home/resalloc/scripting/vm-aarch64-new"
     cmd_delete: "/home/resalloc/scripting/vm-aarch64-delete"
+    tags:
+    - aarch64
