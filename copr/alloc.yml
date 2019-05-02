@@ -1,5 +1,8 @@
-- name: check/create instance
+- name: create instance
   hosts: 127.0.0.1
+  gather_facts: False
+  connection: local
+
   tasks:
   - name: spin machine with script
     local_action: shell /bin/bash ./allocate-vm

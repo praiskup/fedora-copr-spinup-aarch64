@@ -1,6 +1,7 @@
 - name: terminate instance
   hosts: 127.0.0.1
   gather_facts: False
+  connection: local
 
   tasks:
   - name: terminate VM
