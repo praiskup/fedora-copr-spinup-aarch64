@@ -1,0 +1,40 @@
+- name: setup resalloc server
+  hosts: all
+  gather_facts: False
+  remote_user: root
+
+  tasks:
+
+
+  # this is to be moved to Fedora from Copr
+  - name: resalloc rpm repository
+    yum_repository:
+      name: resalloc-ci
+      description: Resource allocator repository
+      baseurl: https://copr-be.cloud.fedoraproject.org/results/praiskup/resalloc-ci/fedora-$releasever-x86_64/
+      gpgcheck: no
+
+  - dnf:
+      state: present
+      name: ['resalloc-server', 'resalloc', 'sqlite']
+
+  - dnf:
+      state: present
+      name: ['git']
+
+  # to be moved to fedora-infrastructure-ansible
+  - git: repo=https://github.com/praiskup/fedora-copr-spinup-aarch64.git
+        dest=/home/resalloc/scripting
+        recursive=yes
+        update=yes
+
+  - shell: | # currently copy remote_src doesn't support recursive copying
+      cp -r /home/copr/provision /home/resalloc/provision
+      chown resalloc:resalloc /home/resalloc/provision
+
+  - copy:
+      src: provisionpb_libvirt_aarch64.yml
+      dest: /home/resalloc/provision/provisionpb_libvirt_aarch64.yml
+      mode: 644
+      owner: resalloc
+      group: resalloc
