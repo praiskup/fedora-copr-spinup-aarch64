@@ -194,7 +194,7 @@ def boot_machine(name, volumes, vcpus):
     for vol in volumes:
         cmd += ['--disk', 'vol={0},device={1},bus=virtio'.format(*vol)]
 
-    if call(cmd):
+    if call(cmd, stdout=sys.stderr):
         raise Exception("can not boot the machine")
 
     cleanup_actions['50_shut_down'.format(name)] = [
