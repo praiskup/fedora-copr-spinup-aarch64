@@ -48,3 +48,12 @@ aarch64_01_dev:
     cmd_delete: "/home/resalloc/scripting/vm-aarch64-delete"
     tags:
     - aarch64
+
+aarch64_02_dev:
+    max: 2
+    max_starting: 2
+    max_prealloc: 2
+    cmd_new: "/home/resalloc/scripting/vm-aarch64-new"
+    cmd_delete: "/home/resalloc/scripting/vm-aarch64-delete"
+    tags:
+    - aarch64
