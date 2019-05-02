@@ -38,3 +38,17 @@
       mode: 644
       owner: resalloc
       group: resalloc
+
+  - file:
+      path: /home/resalloc/.ssh
+      state: directory
+      mode: 700
+      owner: resalloc
+      group: resalloc
+
+  - copy:
+      src: /home/copr/.ssh/id_rsa
+      dest: /home/resalloc/.ssh/id_rsa
+      remote_src: yes
+      owner: resalloc
+      group: resalloc
