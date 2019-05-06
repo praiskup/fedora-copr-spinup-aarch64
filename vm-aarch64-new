@@ -141,9 +141,19 @@ def cleanup():
     log.info("doing cleanup")
     for action in sorted(cleanup_actions):
         log.debug("cleanup {0}".format(action))
+        command = cleanup_actions[action]
+        counter = 0
+        while True:
+            counter += 1
+            rc = command[0](command[1:])
+            if rc == 0:
+                break
+            if counter >= 3:
+                # give up :-(
+                break
+            log.debug("retry cleanup action ...")
+            time.sleep(15)
 
-        command = cleanup_actions[action] 
-        command[0](command[1:])
 
 def alloc_disk(name, size, pool=disk_pool):
     if type(size) == int:

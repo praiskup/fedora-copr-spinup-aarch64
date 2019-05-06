@@ -14,5 +14,18 @@ case "$RESALLOC_POOL_ID" in
 *) die "unknown RESALLOC_POOL_ID=$RESALLOC_POOL_ID" ;;
 esac
 
-virsh -c "$conn" destroy  "$RESALLOC_NAME"
-virsh -c "$conn" undefine "$RESALLOC_NAME" --remove-all-storage --nvram
+repeat()
+{
+    counter=0
+    while :; do
+        counter=$(echo "1 + $counter" | bc)
+        "$@"
+        test $? -eq 0 && break
+        # give up?
+        test "$counter" -ge 3 && break
+        sleep 15
+    done
+}
+
+repeat virsh -c "$conn" destroy  "$RESALLOC_NAME"
+repeat virsh -c "$conn" undefine "$RESALLOC_NAME" --remove-all-storage --nvram
