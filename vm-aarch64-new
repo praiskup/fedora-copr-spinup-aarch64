@@ -156,9 +156,10 @@ def cleanup():
 
 
 def alloc_disk(name, size, pool=disk_pool):
-    size = "{0}G".format(size)
+    if type(size) == int:
+        size = "{0}G".format(size)
 
-    if virsh_silent(['vol-create-as', pool, name, size]) != 0:
+    if virsh_silent(['vol-create-as', pool, name, str(size)]) != 0:
         raise Exception("can't create '{0}' disk".format(name))
 
     cleanup_actions['80_delete_disk_{0}'.format(name)] = [virsh_silent,
@@ -238,7 +239,7 @@ def main():
         # cloud-init config volume
         image_file = generate_config_iso(vm_name, ip)
         log.debug("config image {0}".format(image_file))
-        create_volume_from_iso(vm_name + '_config', 0.001, image_file, pool='images')
+        create_volume_from_iso(vm_name + '_config', '1M', image_file, pool='images')
 
         # the / volume
         create_volume_from_volume(vm_name + '_root', img_volume, pool='images',
