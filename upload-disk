@@ -14,7 +14,7 @@ connections='
 
 export VIRSH_DEFAULT_CONNECT_URI=
 
-test -d "$image" || die "first argument (image) required"
+test -n "$image" || die "first argument (image) required"
 test -f "$image" || die "image $image not found"
 
 for connection in $connections; do
