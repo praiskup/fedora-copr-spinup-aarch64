@@ -112,7 +112,7 @@ def mac_and_ip_address(pool_id, vm_id):
         raise Exception("unknown pool_id {0}".format(pool_id))
 
     if pool_id.endswith('prod'):
-        max_id=2
+        max_id=4
     else:
         max_id=1
 
