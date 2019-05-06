@@ -20,8 +20,8 @@ img_volume = 'copr-builder'
 
 def get_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--swap-vol-size', metavar='GB', default=20)
-    parser.add_argument('--root-vol-size', metavar='GB')
+    parser.add_argument('--swap-vol-size', metavar='GB', type=int, default=20)
+    parser.add_argument('--root-vol-size', metavar='GB', type=int)
     parser.add_argument('--cpu-count', default=2)
     parser.add_argument('--ram-size', metavar='MB', default=4096)
     return parser
