@@ -36,7 +36,5 @@ virt-customize -a "$dst_img" \
     --update \
     --install "$install_packages" \
     --uninstall cloud-init \
-    --ssh-inject root:string:"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC4Rcn/h7KRpB6svH/vjcNWH3dyPi7k7V3DhYBYS9NqBNYUqNDU8BAWTdoIWh3zbDxE1gaT54aQG7KySuwX/8sy3YHYtEKc70grk3orIn6CZV1yZ8VJsgRE6IpK/vo7UqNuTm0v6SaQUjZFK1O8fmD08uQxw5JP5BVnZqN4xrGiAzeYlh+yfiE/I2iC4+d5EceWSTZOd/c3aoycXusfibc8xNyR9k2hXmMOpr+99OLM6/yB1hWMy6PFFWnQyLQvJ2cyrMeQU+BceKY/BZFGrH6fO0DYu5q92FHz19+gOhnq3x2PKB0o0UPZVncxPVSiHluB635HyEHz+9J6B2k+lDrt copr@virthost-aarch64-os01.fedorainfracloud.org" \
-    --ssh-inject root:string:"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDc+57/FXPGw2KvaoOhvJ3BHpzJAPKVdMzFUkW1lmk/6WHZ7V07iad6UwLzL0Tx99cugiKkOZiyhR9OE4b0Y7F/oqEdzWmn+F7JygTNQFwFDFKLJmmAbNFd6SbwBhV18vMGbcZw+DoFK9lH7Fb/0u01YcGfIvkcByhI0keZpm3Xroa7fGqf5NzCaux0XU5MEu3Wui6VzfD4MkLMisw6VAltVuwSYIjOocjO5N+qBAFMMVi5WzuuEH4pe1zqFFMZIFR0CuA3HXMw/SHi8uCx+mlEB/oQ56CjLFfzhYWYY61l0JAeZoMPZTj4PsYDxgm+D+Rtv/74odrHMauM3vZzG4Xt praiskup@unused-4-121.brq.redhat.com" \
     --ssh-inject root:string:"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCeTO0ddXuhDZYM9HyM0a47aeV2yIVWhTpddrQ7/RAIs99XyrsicQLABzmdMBfiZnP0FnHBF/e+2xEkT8hHJpX6bX81jjvs2bb8KP18Nh8vaXI3QospWrRygpu1tjzqZT0Llh4ZVFscum8TrMw4VWXclzdDw6x7csCBjSttqq8F3iTJtQ9XM9/5tCAAOzGBKJrsGKV1CNIrfUo5CSzY+IUVIr8XJ93IB2ZQVASK34T/49egmrWlNB32fqAbDMC+XNmobgn6gO33Yq5Ly7Dk4kqTUx2TEaqDkZfhsVu0YcwV81bmqsltRvpj6bIXrEoMeav7nbuqKcPLTxWEY/2icePF copr-backend" \
     --selinux-relabel
