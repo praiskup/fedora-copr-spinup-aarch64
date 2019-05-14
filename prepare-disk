@@ -32,7 +32,7 @@ install cloud-utils-growpart    # growpart called in pre-network-script.sh
 install qemu-guest-agent        # allow VM inspect from the outside
 
 virt-customize -a "$dst_img" \
-    --copy-in "$sourcedir/copr.repo":/etc/yum.repos.d \
+    --copy-in "$sourcedir/builder-repositories.repo":/etc/yum.repos.d \
     --update \
     --install "$install_packages" \
     --uninstall cloud-init \
